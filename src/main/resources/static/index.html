@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mafia Pass the Phone</title>
+</head>
+<body>
+    <h1>Mafia Pass the Phone</h1>
+    <p>Frontend and backend connection test</p>
+
+    <button id="createGameButton">Create Game</button>
+
+    <p id="result">Click the button to create a game.</p>
+
+    <script>
+        const button = document.getElementById("createGameButton");
+        const result = document.getElementById("result");
+
+        button.addEventListener("click", async function () {
+            result.textContent = "Creating game...";
+
+            try {
+                const response = await fetch("/api/game", {
+                    method: "POST"
+                });
+
+                if (!response.ok) {
+                    throw new Error("Server returned status " + response.status);
+                }
+
+                const game = await response.json();
+
+                result.textContent = "Game created! Game ID: " + game.id;
+            } catch (error) {
+                result.textContent = "Error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
